@@ -1,0 +1,13 @@
+apiVersion: animals.io/v1
+kind: Walrus
+metadata:
+  name: collins
+  labels:
+    iucn.co/location: glacier
+    artic.council/class: "section3--rev12"
+    us-fish-wildlife.gov/id: "112299001281"
+spec:
+  weight: 680
+  age: 22
+  name: "collins"
+  tusks: true

@@ -29,6 +29,44 @@ rusty-tusks
         └── state.rs
 ```
 
+### ArgoCD setup
+
+In order to test out ArgoCD I needed to get it setup in my cluster. Here are the steps that I went through.
+
+Install the manifests and create namespace
+```bash
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+
+Forward the UI via the proxy server
+```bash
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+```
+
+Login to the `admin` account and get the password
+```bash
+argocd admin initial-password -n argocd
+```
+
+Then you need to setup the repo & application. For now I just had it deploy the sample resources I have in the [`/resources`](/resources) directory
+
+I need to figure out how to get the images pushed to my image server and then have it
+use the creds to be able to pull from my server...
+
+OKAY so the way I wanna do this is create another SA on my docker registry to have the cluster Argo is running in be able to get the images
+
+Actually this is unnecessary. Instead I need to create a new service account and apply it to the registry. The steps are above. Either way I still am interested to check out more about the project below:
+
+Going to look into this project: [argocd-image-updater](https://argocd-image-updater.readthedocs.io/en/stable/install/installation/)
+
+> Dont forget to make sure the namespace is created for the operator to run in!
+>
+> ```bash
+> k create ns rusty-tusks
+> ```
+
+
 #### Extra info and context
 
 

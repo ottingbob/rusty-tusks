@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  annotations:
+  labels:
+    app.kubernetes.io/name: rusty-tusks
+  name: walrus-explorer
+rules:
+- apiGroups:
+  - 'animals.io'
+  resources:
+  - 'walruses'
+  - 'walruses/status'
+  verbs:
+  - '*'

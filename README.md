@@ -39,6 +39,19 @@ kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
 
+In order to auth with the cli / `kubectl` you need to have the namespace set in the current context
+```bash
+$ k config set-context --current --namespace argocd
+Context "my-context" modified.
+
+$ argocd login my-context --core
+Context 'kubernetes' updated
+
+$ argocd app list
+NAME                    CLUSTER                         NAMESPACE  PROJECT  STATUS  HEALTH   SYNCPOLICY  CONDITIONS  REPO                                      PATH       TARGET
+...
+```
+
 Forward the UI via the proxy server
 ```bash
 kubectl port-forward svc/argocd-server -n argocd 8080:443

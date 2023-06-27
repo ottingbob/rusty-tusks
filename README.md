@@ -6,6 +6,13 @@ This is the __Walrus__ operator built in `rustlang`
 
 ## How it works
 
+## Project Deployment
+
+The project is deployed via the helm chart and managed by ArgoCD. When I make a change to the [values file](charts/rusty-tusks-operator/rusty-tusks-operator-values.yaml) Argo will recognize the sync differences and apply the new version in the cluster. Here is a screenshot of the setup!!
+
+![Argo CD Setup](assets/rusty-tusks-operator-argocd.png)
+![Happy Application Logs](assets/rusty-tusks-operator-logs.png)
+
 ### Project setup
 
 project setup is not fully baked out yet

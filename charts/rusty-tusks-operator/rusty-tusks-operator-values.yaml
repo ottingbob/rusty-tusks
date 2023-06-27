@@ -1,5 +1,7 @@
 replicaCount: 1
 
+namespace: rusty-tusks
+
 image:
   # TODO: In the argo project update the repository and tag
   repository: nginx

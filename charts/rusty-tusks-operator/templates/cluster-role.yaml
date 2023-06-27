@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    {{- include "rusty-tusks-operator.labels" . | nindent 4 }}
+  name: walrus-explorer
+rules:
+- apiGroups:
+  - 'animals.io'
+  resources:
+  - 'walruses'
+  - 'walruses/status'
+  verbs:
+  - '*'

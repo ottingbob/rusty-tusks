@@ -37,7 +37,7 @@ securityContext: {}
   # runAsUser: 1000
 
 probe:
-  enabled: true
+  enabled: false
   path: "/"
 
 service:

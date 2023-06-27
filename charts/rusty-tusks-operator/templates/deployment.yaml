@@ -37,7 +37,7 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-          {{- if .Values.probe and .Values.probe.enabled }}
+          {{- if .Values.probe.enabled }}
           livenessProbe:
             httpGet:
               path: {{ .Values.probe.path | default "/" }}

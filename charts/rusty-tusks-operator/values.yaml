@@ -36,6 +36,10 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+probe:
+  enabled: true
+  path: "/"
+
 service:
   type: ClusterIP
   port: 80

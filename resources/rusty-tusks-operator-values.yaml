@@ -1,11 +1,13 @@
 replicaCount: 1
 
 image:
+  # TODO: In the argo project update the repository and tag
   repository: nginx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
+# In the argo project apply the `imagePullSecret`
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -31,6 +33,11 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
+
+# Disable the liveness / readiness probes while they are still unimplemented
+probe:
+  enabled: false
+  path: "/"
 
 service: {}
 

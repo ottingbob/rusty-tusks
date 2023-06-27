@@ -37,14 +37,16 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+          {{- if .Values.probe and .Values.probe.enabled }}
           livenessProbe:
             httpGet:
-              path: /
+              path: {{ .Values.probe.path | default "/" }}
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: {{ .Values.probe.path | default "/" }}
               port: http
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

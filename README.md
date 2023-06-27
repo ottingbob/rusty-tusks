@@ -8,9 +8,12 @@ This is the __Walrus__ operator built in `rustlang`
 
 ## Project Deployment
 
-The project is deployed via the helm chart and managed by ArgoCD. When I make a change to the [values file](charts/rusty-tusks-operator/rusty-tusks-operator-values.yaml) Argo will recognize the sync differences and apply the new version in the cluster. Here is a screenshot of the setup!!
+The project is deployed via the helm chart and managed by ArgoCD. When I make a change to the [values file](charts/rusty-tusks-operator/rusty-tusks-operator-values.yaml) Argo will recognize the sync differences and apply the new version in the cluster
 
+Here is a screenshot of the Argo CD Setup:
 ![Argo CD Setup](assets/rusty-tusks-operator-argocd.png)
+
+And here are some logs from our happy walrus-operator application:
 ![Happy Application Logs](assets/rusty-tusks-operator-logs.png)
 
 ### Project setup

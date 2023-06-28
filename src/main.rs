@@ -5,11 +5,8 @@ use tracing::{debug, info};
 
 use rusty_tusks::controller::WalrusTracker;
 
-use models::pod::Walrus;
-
-mod models {
-    include!("models/mod.rs");
-}
+// pub mod models;
+use rusty_tusks::models::pod::Walrus;
 
 #[derive(Debug, StructOpt)]
 #[structopt(

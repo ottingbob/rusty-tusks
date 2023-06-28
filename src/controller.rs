@@ -3,14 +3,9 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use tokio::sync::RwLock;
 
-// TODO: When do I use either or...
-use crate::controller::models::state::{Released, Tagged};
-use models::pod::{Walrus, WalrusStatus};
-use models::state::{SharedWalrusState, WalrusState};
-
-mod models {
-    include!("models/mod.rs");
-}
+use crate::models::pod::{Walrus, WalrusStatus};
+use crate::models::state::{Released, Tagged};
+use crate::models::state::{SharedWalrusState, WalrusState};
 
 pub struct WalrusTracker {
     shared: Arc<RwLock<SharedWalrusState>>,

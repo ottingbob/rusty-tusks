@@ -1,13 +1,13 @@
-use std::sync::Arc;
 use krator::{Manifest, ObjectState, State, Transition, TransitionTo};
 use krator_derive::*;
-use tokio::sync::RwLock;
-use std::collections::{HashMap, HashSet};
-use rand::Rng;
 use rand::seq::IteratorRandom;
+use rand::Rng;
+use std::collections::{HashMap, HashSet};
+use std::sync::Arc;
+use tokio::sync::RwLock;
 use tracing::info;
 
-use super::pod::{WalrusPhase, WalrusStatus, Walrus};
+use super::pod::{Walrus, WalrusPhase, WalrusStatus};
 
 pub struct WalrusState {
     pub name: String,
@@ -72,12 +72,11 @@ struct Roam;
 async fn make_friend(name: &str, shared: &Arc<RwLock<SharedWalrusState>>) -> Option<String> {
     let mut walruses = shared.write().await;
     let mut rng = rand::thread_rng();
-    let other_walruses =
-        walruses
-          .friends
-          .keys()
-          .map(|s| s.to_owned())
-          .choose_multiple(&mut rng, walruses.friends.len());
+    let other_walruses = walruses
+        .friends
+        .keys()
+        .map(|s| s.to_owned())
+        .choose_multiple(&mut rng, walruses.friends.len());
     for other_walrus in other_walruses {
         if name == other_walrus {
             continue;

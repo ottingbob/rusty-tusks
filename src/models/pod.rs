@@ -1,8 +1,7 @@
 use krator::ObjectStatus;
-use schemars::JsonSchema;
 use kube_derive::CustomResource;
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-
 
 // TODO: Determine if this is helpful anywhere...
 // Define an alias for the actual WalrusPod custom resource
@@ -20,12 +19,12 @@ use serde::{Deserialize, Serialize};
 )]
 #[serde(rename_all = "camelCase")]
 pub struct WalrusSpec {
-  // TODO: I need to come back to these and get better fields in the spec as it
-  //  relates to the states / phases defined below
-  pub age: u32,
-  pub name: String,
-  pub tusks: bool,
-  pub weight: f64,
+    // TODO: I need to come back to these and get better fields in the spec as it
+    //  relates to the states / phases defined below
+    pub age: u32,
+    pub name: String,
+    pub tusks: bool,
+    pub weight: f64,
 }
 
 // In the krator example they also setup a version of the `WalrusSpec` for the
@@ -33,21 +32,19 @@ pub struct WalrusSpec {
 
 #[derive(Debug, Serialize, Deserialize, Clone, JsonSchema)]
 pub enum WalrusPhase {
-  Roaming,
-  Hungry,
-  Asleep
-
-  /*
-    WakingUp,
-    Eating,
-    Swimming,
-    Basking,
-    Playing,
-    Socializing,
-    Resting,
-    Sleepy,
-    Sleeping,
-  */
+    Roaming,
+    Hungry,
+    Asleep, /*
+              WakingUp,
+              Eating,
+              Swimming,
+              Basking,
+              Playing,
+              Socializing,
+              Resting,
+              Sleepy,
+              Sleeping,
+            */
 }
 
 // TODO: Extend the status as it relates to the states above. For instance
@@ -83,4 +80,3 @@ impl ObjectStatus for WalrusStatus {
         serde_json::json!({ "status": serde_json::Value::Object(status) })
     }
 }
-

@@ -1,0 +1,108 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: "rust-ci-workflow-"
+spec:
+  entrypoint: build-test-push-workflow
+  arguments:
+    parameters:
+    # TODO: This is currently not working & getting all the way thru
+    #   to the build stage
+    - name: revision
+      value: "2460370a"
+
+  # a temporary volume, named workdir, will be used as a working directory
+  # for this workflow. This volume is passed around from step to step.
+  volumeClaimTemplates:
+  - metadata:
+      name: workdir
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+
+  # This spec contains 3 templates:
+  templates:
+  - name: build-test-push-workflow
+    # Instead of just running a container
+    # This template has a sequence of steps
+    steps:
+    - - name: build                 # build is run before the following steps
+        template: build-rust-project
+        arguments:
+          parameters:
+          - name: TODO
+            value: what other params should be here
+          - name: revision
+            value: "2460370a"
+            # TODO: Get this working with the latest commit hash from a make target
+            # value: "{{inputs.parameters.revision}}"
+            #
+    # the test step expands into three parallel steps run
+    #
+    - - name: test-rust-project     # double dash => run after previous step
+        template: whalesay
+        arguments:
+          parameters:
+          - name: message
+            value: "hello2"
+          - name: stage
+            value: "test"
+    - - name: push-docker-registry  # single dash => run in parallel with previous step
+        template: whalesay
+        arguments:
+          parameters:
+          - name: message
+            value: "hello3"
+          - name: stage
+            value: "docker-push"
+
+  # Workflow Templates
+  #
+  - name: build-rust-project
+    inputs:
+      parameters:
+      - name: revision
+      artifacts:
+      - name: code
+        path: /volume
+        git:
+          repo: https://github.com/ottingbob/rusty-tusks.git
+          revision: "{{inputs.parameters.revision}}"
+    container:
+      image: "clux/muslrust:1.72.0-nightly-2023-06-16"
+      command: [sh, -c]
+      args: ["
+        ls -la &&
+        pwd &&
+        git status &&
+        which cargo &&
+        rustup default nightly &&
+        cargo build --release --features=derive &&
+        ls -la ./target/x86_64-unknown-linux-musl/release/walrus
+      "]
+      volumeMounts:
+      - name: workdir
+        # TODO: Unsure what this param does
+        mountPath: /usr/src/app
+  - name: test-rust-project
+    script:
+      # parameters: # what goes in docker build
+      # - name: TODO
+      image: bash:5.2.15-alpine3.18
+      command: [bash]
+      source: |
+        # [cowsay]
+        echo "testme"
+        # echo "{{ inputs.parameters.TODO }}"
+      # args: ["{{inputs.parameters.TODO}}", "{{inputs.parameters.stage}}"]
+  - name: whalesay
+    inputs:
+      parameters:
+      - name: message
+      - name: stage
+    container:
+      image: docker/whalesay
+      command: [cowsay]
+      args: ["{{inputs.parameters.message}}", "{{inputs.parameters.stage}}"]

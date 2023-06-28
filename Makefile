@@ -41,3 +41,11 @@ docker-run:
 		--rm \
 		$(RUSTY_TUSKS_IMAGE)
 
+###
+# Argo commands
+
+REVISION := $(shell git log | head -n1 | awk -F' ' '{print substr($$2, 0, 8)}')
+
+.PHONY: argo-submit
+argo-submit:
+	argo submit -n argo --watch  -p revision=$(REVISION) -- resources/argo-ci-workflow.yaml
